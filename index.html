@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animey.uz Reels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="website icon" type="png" href="./animey.png" class="qayr">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        
+        body {
+            background-color: #000;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: #ff3040;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .camera-icon {
+            font-size: 22px;
+            color: white;
+            transition: transform 0.2s;
+        }
+        
+        .camera-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        .reels-container {
+            margin-top: 60px;
+            width: 100%;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            transition: 10s ease;
+            -webkit-overflow-scrolling: touch;
+            transition: transform 50s cubic-bezier(0.4, 0, 0.2, 1);     
+            scroll-snap-stop: always;      
+        }
+        
+        .reel {
+            width: 100%;
+            height: calc(100vh - 60px);
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-stop: always;
+        }
+        
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #111;
+        }
+        
+        .reel-info {
+            position: absolute;
+            bottom: 0px;
+            left: 15px;
+            width: calc(100% - 30px);
+            z-index: 10;
+        }
+        
+        .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .verified-badge {
+            font-size: 14px;
+            margin-left: 5px;
+            color: #0095f6;
+        }
+        
+        .caption {
+            margin-bottom: 10px;
+            frank-size: 14px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .tag {
+            color: #b3d4fc;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+        
+        .tag:hover {
+            color: #ff3040;
+        }
+        
+        .music {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 15px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .music-icon {
+            margin-right: 8px;
+            animation: music-playing 2s infinite;
+        }
+        
+        @keyframes music-playing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .right-sidebar {
+            position: absolute;
+            right: 3px;
+            bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+        
+        .action-icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+            opacity: 0.8;
+        }
+        
+        .action-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        .action-count {
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .profile-pic {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-bottom: 10px;
+            object-fit: cover;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .profile-pic:hover {
+            transform: scale(1.1);
+        }
+        
+        .follow-btn {
+            background: linear-gradient(45deg, #ff3040, #ff6f61);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .follow-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+        
+        .follow-btn.following {
+            background: #333;
+            color: #fff;
+        }
+        
+        .like-animation {
+            position: absolute;
+            font-size: 120px;
+            color: #ff3040;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: like-animation 1.2s ease-out;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+        
+        @keyframes like-animation {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+            30% {
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+            45%, 80% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .volume-control {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s;
+            opacity: 0.5;
+        }
+        
+        .volume-control:hover {
+            transform: scale(1.1);
+        }
+        
+        .volume-icon {
+            font-size: 14px;
+            color: white;
+        }
+        
+        .loading-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        .loading-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #ff3040;
+            border-radius: 50%;
+            will-change: transform, opacity;
+            animation: loading-spin 1.2s infinite ease-in-out;
+        }
+        
+        @keyframes loading-spin {
+            0% {
+                transform: rotate(0deg) translateX(20px) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+                transform: rotate(180deg) translateX(20px) rotate(180deg);
+            }
+            100% {
+                transform: rotate(360deg) translateX(20px) rotate(360deg);
+                opacity: 1;
+            }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #ff3040, #ff6f61);
+            z-index: 10;
+            transition: width 0.1s linear;
+        }
+        
+        .offline-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(50,50,50,0.7));
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            z-index: 20;
+            display: none;
+            backdrop-filter: blur(10px);
+            max-width: 80%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        
+        .offline-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #ff3040;
+        }
+        
+        .comments-section {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9), rgba(50,50,50,0.7));
+            backdrop-filter: blur(10px);
+            z-index: 15;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: none;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .comments-section.show {
+            transform: translateY(0);
+            display: block;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .comment-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #fff;
+        }
+        
+        .close-comments {
+            font-size: 20px;
+            cursor: pointer;
+            color: #ff3040;
+            transition: transform 0.2s;
+        }
+        
+        .close-comments:hover {
+            transform: scale(1.2);
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+        
+        .comment:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .comment-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-username {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 3px;
+            color: #fff;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            color: #ddd;
+        }
+        
+        .comment-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 3px;
+        }
+        
+        .comment-like {
+            font-size: 12px;
+            color: #999;
+            margin-left: 5px;
+        }
+        
+        .comment-input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+        
+        .comment-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .comment-send {
+            margin-right: 10 энергияpx;
+            color: #ff3040;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .comment-send:hover {
+            transform: scale(1.2);
+        }
+
+        .offline-message {
+            display: none;
+            background-color: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Animey.uz</div>
+        <div class="camera-icon"><i class="fas fa-camera"></i></div>
+    </div>
+    
+    <div class="reels-container" id="reelsContainer">
+        <!-- Reels will be added dynamically -->
+    </div>
+
+    <div class="offline-message" id="offlineMessage">
+        <div class="offline-icon"><i class="fas fa-wifi-slash"></i></div>
+        <h3>Internetga ulanmadingiz</h3>
+        <p>Iltimos, internetga ulaning va qayta urunib ko'ring</p>
+    </div>
+
+    <script>
+        // Ovoz holatini saqlash uchun global o'zgaruvchi
+        let isMuted = false; // Boshida ovoz yoqilgan
+
+        // Check online status
+        function updateOnlineStatus() {
+            const offlineMessage = document.getElementById('offlineMessage');
+            const videos = document.querySelectorAll('video');
+            const loadingContainers = document.querySelectorAll('.loading-container');
+            const reelOfflineMessages = document.querySelectorAll('.reel .offline-message');
+            
+            if (navigator.onLine) {
+                offlineMessage.style.display = 'none';
+                reelOfflineMessages.forEach(msg => msg.style.display = 'none');
+                videos.forEach(video => {
+                    const rect = video.getBoundingClientRect();
+                    if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                        video.preload = 'auto';
+                        video.muted = isMuted; // Global ovoz holatini qo'llash
+                        video.play().catch(() => {
+                            console.log("Autoplay prevented");
+                            isMuted = true; // Agar autoplay bloklansa, ovozsiz rejim
+                            video.muted = true;
+                            const volumeIcon = video.parentElement.querySelector('.volume-icon');
+                            if (volumeIcon) {
+                                volumeIcon.className = `volume-icon fas fa-volume-mute`;
+                            }
+                        });
+                    }
+                });
+                loadingContainers.forEach(container => container.style.display = 'none');
+            } else {
+                offlineMessage.style.display = 'block';
+                reelOfflineMessages.forEach(msg => msg.style.display = 'block');
+                videos.forEach(video => {
+                    video.pause();
+                    video.preload = 'none';
+                });
+                loadingContainers.forEach(container => container.style.display = 'none');
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
+        // Sample video URLs (two real videos included)
+        const videoUrls = [
+            "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+            "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            "./aniress1.mp4",
+            "./aniress2.mp4",
+            "./aniress3.mp4",
+            "./aniress4.mp4",
+            "./aniress5mp4.mp4",
+            "./aniress6.mp4",
+            "./aniress7.mp4",
+            "./aniress8.mp4",
+            "./aniress9.mp4",
+            "./aniress10.mp4",
+            "./aniress11.mp4",
+            "./aniress12.mp4",
+            "./aniress13.mp4",
+            "./aniress14.mp4",
+            "./aniress15.mp4",
+            "./aniress16.mp4",
+            "./aniress17.mp4",
+            "./aniress18.mp4",
+            "./aniress19.mp4",
+            "./aniress20.mp4",
+            "./aniress21.mp4",
+            "./aniress22.mp4",
+            "./aniress23.mp4",
+            "./aniress24.mp4",
+            "./aniress25.mp4",
+            "./aniress26.mp4",
+            "./aniress27.mp4",
+            "./aniress28.mp4",
+            "./aniress29.mp4",
+            "./aniress30.mp4",
+            "./aniress31.mp4",
+            "./aniress32.mp4",
+            "./aniress33.mp4",
+            "./aniress34.mp4",
+            "./aniress35.mp4",
+            "./aniress36.mp4",
+            "./aniress37.mp4",
+            "./aniress38.mp4",
+            "./aniress39.mp4",
+            "./aniress40.mp4"
+        ];
+        
+        // Shuffle videos for random order
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        const shuffledVideos = shuffleArray([...videoUrls]);
+        
+        // Sample captions
+        const captions = [
+            "Anime is life! 🎌 #anime",
+            "Best anime moments 💖 #otaku",
+            "Naruto forever! 🍥 #naruto",
+            "One Piece fan here ⚓ #onepiece",
+            "Demon Slayer amazing animation ⚔️ #demonslayer",
+            "Attack on Titan epic scenes 🏰 #attackontitan",
+            "My Hero Academia hype! 🦸 #myheroacademia",
+            "Studio Ghibli magic ✨ #ghibli",
+            "Anime music hits different 🎵 #animesongs",
+            "Cosplay goals 👘 #cosplay"
+        ];
+        
+        // Sample tags
+        const tags = [
+            "#anime", "#naruto", "#animey.uz", "#onepiece", "#demonslayer",
+            "#attackontitan", "#myheroacademia", "#ghibli", "#otaku", "#cosplay"
+        ];
+        
+        // Sample music names
+        const musicNames = [
+            "Original Sound - Animey.uz",
+            "Naruto Shippuden OST - Takanashi Yasuharu",
+            "Unravel - Tokyo Ghoul OP",
+            "Gurenge - Demon Slayer OP",
+            "Silhouette - Naruto Shippuden OP"
+        ];
+        
+        // Sample profile names
+        const profileNames = [
+            "anime_lover_123",
+            "otaku_king",
+            "weeb_queen",
+            "naruto_fan4life",
+            "onepiece_stan",
+            "uzb_anime_fan",
+            "toshkent_weeb",
+            "samarkand_cosplay",
+            "anime_uzbek",
+            "otaku_uz",
+            "animey.uz",
+            "jigarim",
+            "OtakuBoy_Uz",
+            "NarutoBek",
+            "Animechi_97",
+            "ItachiXon",
+            "Sasuke_Usta",
+            "Goku_Bek",
+            "AnimeShaydo",
+            "Kawaii_Uzboy",
+            "Shinigami_Bobur",
+            "MangaSevar",
+            "ChibiZor",
+            "Senpai_Uz",
+            "DemonKing_Uz",
+            "SamuraiAskar",
+            "UzAnimeFan",
+            "HinataQiz",
+            "Tanjiro_Bek",
+            "Otaku_Nomad",
+            "Zoro_Uz",
+            "Manga_Yigit",
+            "YoruXan",
+            "ShadoKun",
+            "Temariq",
+            "NamikUz",
+            "KaiZet",
+            "Rinsoi",
+            "UzRaito",
+            "ChikaraBoy",
+            "Mokuro",
+            "ZenkoQora",
+            "ShisaiX",
+            "Fujiko_Uz",
+            "AkiroDox",
+            "SangoUz",
+            "YukiXona",
+            "OkamiBek",
+            "KuroQoplon",
+            "TetsuMavzu",
+            "SoraJasur",
+            "HikariKilla",
+            "Renkai",
+            "NoriyoUz",
+            "KusaWarrior",
+            "OboroNox",
+            "RikutoChi",
+            "YamikoLayt",
+            "ArataXon",
+            "TenshiUz",
+            "KazeBek",
+            "MioriDo‘st"
+        ];
+        
+        // Uzbek and Russian comments
+        const uzbekComments = [
+            "Juda zo'r anime! 😍",
+            "Bu epizod menga juda yoqdi!",
+            "Anime dunyosi eng ajoyib!",
+            "Qayta ko'rishga arziydi 👍",
+            "Bosh qahramon juda kuchli!",
+            "Bu anime mening sevimlim! 🔥",
+            "Qachon yangi epizod chiqadi? 😊",
+            "Animey.uz eng zo'r platforma! 💪",
+            "Uzbekistonda anime muxlislari ko'p ekan! 🙌",
+            "Bu soundtrack juda ajoyib! 🎶",
+            "Demon Slayer animatsiyasi zo'r! ⚔️",
+            "Naruto eng yaxshi anime! 🍥",
+            "Animey.uz eng zo'r platforma! 💪",
+            "One Piece hikoyasi juda qiziq! ⚓",
+            "Attack on Titan eng epik! 🏰",
+            "My Hero Academia motivatsiya beradi! 🦸",
+            "Ghibli filmlari har doim super! ✨",
+            "Anime kechalari uyqusiz o'tyapti! 😴",
+            "Animey.uz eng zo'r platforma! ❄️❤️⭐",
+            "Cosplay qilishni xohlardim! 👘",
+            "Bu anime menga yangi dunyo ochdi! 🌍",
+            "Animey.uz ga rahmat, zo'r videolar! 🙏",
+            "Barchaga tavsiya qilaman! ⭐",
+            "Animey.uz eng zo'r platforma! 🍂💖🤩",
+            "Bu epizod juda hayajonli edi! 😎",
+            "Anime muxlislari, qani birlashamiz! 🤝",
+            "Bu anime mening yuragimni urdi! 💖",
+            "Juda zo'r, davom eting! 🚀",
+            "Animey.uz eng yaxshi sayt! 🥳",
+            "Bu anime har kuni ko'rishga arziydi! 😍",
+            "Eng zo'r platforma, rahmat! 🙌",
+            "Anime muxlislari uchun eng yaxshi joy! 💥",
+            "Bu epizod menga energiya berdi! ⚡",
+            "Shu narsa zo‘r chiqibdi, rahmat! 🔥",
+            "Ey, bunaqasi qani edi yana! 😁",
+            "Yaxshi o‘ylab qilingan ekan, rispect! 👏",
+            "Ko‘rib ko‘rib ko‘rgim kelaveradi! 😍",
+            "Juda chiroyli chiqqan, zo‘r! 🤝",
+            "Bu zo‘r g‘oya ekan o‘zi! 😎",
+            "Joyidan uribsan, omad! 🎯",
+            "Bunday narsa ko‘p ko‘rinmaydi, haqiqat! 💯",
+            "O‘xshabdi, rosa o‘xshabdi! 🤩",
+            "Har safar shu darajada chiqsa, tamom! 🫶",
+            "Katta gap yo‘q, lekin menga yoqdi! 😄",
+            "Juda tiniq, oddiy va chiroyli! 🫣",
+            "Huddi menga qarab qilgandek tuyuldi! 👀",
+            "Ko‘ngil bilan ishlangan, bilinyapti! 🫡",
+            "Ozgina narsa, lekin ta’siri katta! ✨",
+            "Hayron qoldim, chindan! 😲",
+            "Bunaqasi serialda bo‘lmaydi o‘zi! 🎬",
+            "Shunaqa detalga e’tibor berganing zo‘r! 🧠",
+            "O‘zidan bir xotirjamlik beribdi! ☁️",
+            "Yoqdi, yoqdi, rosa yoqdi! 🤗",
+            "Iloji bo‘lsa, shunaqasidan yana ko‘proq qiling! 🐾",
+            "Rasxod bo‘ldi bu gaplar! 📌",
+            "Ichimda bir narsa qimirlagandek bo‘ldi! 🥹",
+            "Buni ko‘rib odamda kayfiyat ko‘tariladi! 😆",
+            "Fon musiqasi bilan to‘liq bo‘libdi! 🎧",
+            "Qaytadan ko‘rib, qayta kuldim! 🔄",
+            "Sekin lekin mazmunli ketdi! 🐢",
+            "Ustida ish qilingan, ko‘rinib turibdi! 😇",
+            "Oddiy gap bilan yurakni tekkizding! 💬",
+            "Huddi kino sahnasidek bo‘ldi! 📽️",
+            "Shu kadrlarga qoyil qoldim! 📸",
+            "Juda yumshoq chiqibdi, shirin! 😍",
+            "Harakatlar zo‘r ketvotti, shu zaylda! 🎉",
+            "Tinchgina o‘tirganimda kayfiyatimni ko‘tardi! 👏",
+            "Shu joyini alohida yoqtirdim! 🥳",
+            "Zo‘r, oddiy, samimiy – boshqacha! 😌",
+            "Bu kontentdan charchamayman! 🛋️",
+            "Yaxshi fikr, shunaqa davomi kerak! 💡",
+            "Kayfiyatimni ko‘tarib yubordi shu! 🤲",
+            "Yangi, yangicha uslub – ko‘zi ochilgan narsa! 🐣"
+        ];
+        
+        const russianComments = [
+            "Очень крутое аниме! 😍",
+            "Этот эпизод мне очень понравился!",
+            "Мир аниме самый лучший!",
+            "Стоит пересмотреть 👍",
+            "Главный герой очень сильный!",
+            "Аниме — это жизнь! 🎌",
+            "Когда выйдет новый эпизод? 😊",
+            "Саундтрек просто огонь! 🎶"
+        ];
+        
+        // Generate random comments
+        function generateComments() {
+            const comments = [];
+            const commentCount = Math.floor(Math.random() * (40 - 35 + 1)) + 35; // 35-40 ta komment
+            const uzbekCommentCount = Math.floor(commentCount * 0.8); // 80% o'zbekcha
+            const russianCommentCount = commentCount - uzbekCommentCount; // 20% ruscha
+            
+            // Uzbek comments
+            for (let i = 0; i < uzbekCommentCount; i++) {
+                const commentText = uzbekComments[Math.floor(Math.random() * uzbekComments.length)];
+                comments.push({
+                    username: profileNames[Math.floor(Math.random() * profileNames.length)],
+                    text: commentText,
+                    time: `${Math.floor(Math.random() * 59) + 1} ${Math.random() > 0.5 ? 'min' : 'h'} ago`,
+                    likes: Math.floor(Math.random() * 200),
+                    avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`
+                });
+            }
+            
+            // Russian comments
+            for (let i = 0; i < russianCommentCount; i++) {
+                const commentText = russianComments[Math.floor(Math.random() * russianComments.length)];
+                comments.push({
+                    username: profileNames[Math.floor(Math.random() * profileNames.length)],
+                    text: commentText,
+                    time: `${Math.floor(Math.random() * 59) + 1} ${Math.random() > 0.5 ? 'min' : 'h'} ago`,
+                    likes: Math.floor(Math.random() * 200),
+                    avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`
+                });
+            }
+            
+            return comments.sort(() => Math.random() - 0.5); // Random tartibda aralashtirish
+        }
+        
+        // Generate random likes
+        function getRandomLikes() {
+            return Math.floor(Math.random() * (1000000 - 50000 + 1)) + 50000;
+        }
+        
+        // Generate random comment count for display
+        function getRandomCommentCount() {
+            return Math.floor(Math.random() * (150000 - 100000 + 1)) + 100000; // 100K+ ko'rinishi uchun
+        }
+        
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Create reel
+        function createReel(videoUrl, index) {
+            const reel = document.createElement('div');
+            reel.className = 'reel';
+            
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            reel.appendChild(progressBar);
+            
+            const loadingContainer = document.createElement('div');
+            loadingContainer.className = 'loading-container';
+            
+            const loadingSpinner = document.createElement('div');
+            loadingSpinner.className = 'loading-spinner';
+            
+            for (let i = 0; i < 6; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'loading-dot';
+                dot.style.animationDelay = `${i * 0.2}s`;
+                loadingSpinner.appendChild(dot);
+            }
+            
+            const loadingText = document.createElement('div');
+            loadingText.className = 'loading-text';
+            loadingText.textContent = 'Yuklanmoqda...';
+            
+            loadingContainer.appendChild(loadingSpinner);
+            loadingContainer.appendChild(loadingText);
+            reel.appendChild(loadingContainer);
+            
+            const offlineMessage = document.createElement('div');
+            offlineMessage.className = 'offline-message';
+            offlineMessage.innerHTML = `
+                <div class="offline-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                <h3>Internetga ulanmadingiz</h3>
+                <p>Iltimos, internetga ulaning va qayta urunib ko'ring</p>
+            `;
+            reel.appendChild(offlineMessage);
+            
+            const video = document.createElement('video');
+            video.src = videoUrl;
+            video.preload = 'none';
+            video.loop = true;
+            video.muted = isMuted; // Global ovoz holatini qo'llash
+            video.playsInline = true;
+            
+            video.addEventListener('canplay', () => {
+                if (navigator.onLine) {
+                    loadingContainer.style.display = 'none';
+                    offlineMessage.style.display = 'none';
+                    video.play().catch(() => {
+                        console.log("Autoplay prevented");
+                        isMuted = true;
+                        video.muted = true;
+                        const volumeIcon = reel.querySelector('.volume-icon');
+                        volumeIcon.className = `volume-icon fas fa-volume-mute`;
+                    });
+                }
+            });
+            
+            video.addEventListener('error', () => {
+                if (!navigator.onLine) {
+                    offlineMessage.style.display = 'block';
+                    loadingContainer.style.display = 'none';
+                } else {
+                    loadingText.textContent = "Video yuklab bo'lmadi";
+                    loadingContainer.style.display = 'flex';
+                    offlineMessage.style.display = 'none';
+                }
+            });
+            
+            video.addEventListener('timeupdate', () => {
+                const progress = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+            });
+            
+            video.addEventListener('click', () => {
+                isMuted = !isMuted; // Global ovoz holatini yangilash
+                video.muted = isMuted;
+                const volumeIcon = reel.querySelector('.volume-icon');
+                volumeIcon.className = `volume-icon fas fa-volume-${isMuted ? 'mute' : 'up'}`;
+                // Boshqa videolarga ham ovoz holatini qo'llash
+                document.querySelectorAll('video').forEach(v => {
+                    v.muted = isMuted;
+                    const vIcon = v.parentElement.querySelector('.volume-icon');
+                    if (vIcon) {
+                        vIcon.className = `volume-icon fas fa-volume-${isMuted ? 'mute' : 'up'}`;
+                    }
+                });
+            });
+            
+            // Videoga ikki marta bosilganda like bosilishi
+            video.addEventListener('dblclick', (e) => {
+                e.preventDefault(); // Ikki marta bosishning boshqa harakatlarni bloklash
+                const likeIcon = reel.querySelector('.like-icon');
+                const likeCount = reel.querySelector('.like-count');
+                const currentLikes = parseInt(likeCount.textContent.replace(/,/g, ''));
+                
+                if (likeIcon.classList.contains('far')) {
+                    likeIcon.classList.remove('far');
+                    likeIcon.classList.add('fas');
+                    likeIcon.style.color = '#ff3040';
+                    likeCount.textContent = formatNumber(currentLikes + 1);
+                    likeCount.style.color = '#ff3040';
+                    
+                    const likeAnimation = document.createElement('div');
+                    likeAnimation.className = 'like-animation';
+                    likeAnimation.innerHTML = '<i class="fas fa-heart"></i>';
+                    reel.appendChild(likeAnimation);
+                    
+                    setTimeout(() => likeAnimation.remove(), 1200);
+                } else {
+                    likeIcon.classList.remove('fas');
+                    likeIcon.classList.add('far');
+                    likeIcon.style.color = '';
+                    likeCount.textContent = formatNumber(currentLikes - 1);
+                    likeCount.style.color = '';
+                }
+            });
+            
+            const volumeControl = document.createElement('div');
+            volumeControl.className = 'volume-control';
+            const volumeIcon = document.createElement('i');
+            volumeIcon.className = `volume-icon fas fa-volume-${isMuted ? 'mute' : 'up'}`;
+            volumeControl.appendChild(volumeIcon);
+            
+            volumeControl.addEventListener('click', () => {
+                isMuted = !isMuted; // Global ovoz holatini yangilash
+                video.muted = isMuted;
+                volumeIcon.className = `volume-icon fas fa-volume-${isMuted ? 'mute' : 'up'}`;
+                // Boshqa videolarga ham ovoz holatini qo'llash
+                document.querySelectorAll('video').forEach(v => {
+                    v.muted = isMuted;
+                    const vIcon = v.parentElement.querySelector('.volume-icon');
+                    if (vIcon) {
+                        vIcon.className = `volume-icon fas fa-volume-${isMuted ? 'mute' : 'up'}`;
+                    }
+                });
+            });
+            
+            const reelInfo = document.createElement('div');
+            reelInfo.className = 'reel-info';
+            
+            const username = document.createElement('div');
+            username.className = 'username';
+            username.innerHTML = `Animey.uz<i class="verified-badge fas fa-check-circle"></i>`;
+            
+            const caption = document.createElement('div');
+            caption.className = 'caption';
+            caption.textContent = captions[Math.floor(Math.random() * captions.length)];
+            
+            const tagsContainer = document.createElement('div');
+            tagsContainer.className = 'tags';
+            const tagCount = Math.floor(Math.random() * 3) + 3;
+            const shuffledTags = [...tags].sort(() => 0.5 - Math.random());
+            for (let i = 0; i < tagCount; i++) {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = shuffledTags[i];
+                tagsContainer.appendChild(tag);
+            }
+            
+            const music = document.createElement('div');
+            music.className = 'music';
+            const musicIcon = document.createElement('div');
+            musicIcon.className = 'music-icon';
+            musicIcon.innerHTML = '<i class="fas fa-music"></i>';
+            const musicName = document.createElement('div');
+            musicName.textContent = musicNames[Math.floor(Math.random() * musicNames.length)];
+            music.appendChild(musicIcon);
+            music.appendChild(musicName);
+            
+            reelInfo.appendChild(username);
+            reelInfo.appendChild(caption);
+            reelInfo.appendChild(tagsContainer);
+            reelInfo.appendChild(music);
+            
+            const rightSidebar = document.createElement('div');
+            rightSidebar.className = 'right-sidebar';
+            
+            const likeBtn = document.createElement('div');
+            likeBtn.className = 'action-btn';
+            const likeIcon = document.createElement('i');
+            likeIcon.className = 'action-icon like-icon far fa-heart';
+            const likeCount = document.createElement('div');
+            likeCount.className = 'action-count like-count';
+            likeCount.textContent = formatNumber(getRandomLikes());
+            likeBtn.appendChild(likeIcon);
+            likeBtn.appendChild(likeCount);
+            
+            likeIcon.addEventListener('click', () => {
+                const currentLikes = parseInt(likeCount.textContent.replace(/,/g, ''));
+                if (likeIcon.classList.contains('far')) {
+                    likeIcon.classList.remove('far');
+                    likeIcon.classList.add('fas');
+                    likeIcon.style.color = '#ff3040';
+                    likeCount.textContent = formatNumber(currentLikes + 1);
+                    likeCount.style.color = '#ff3040';
+                    
+                    const likeAnimation = document.createElement('div');
+                    likeAnimation.className = 'like-animation';
+                    likeAnimation.innerHTML = '<i class="fas fa-heart"></i>';
+                    reel.appendChild(likeAnimation);
+                    setTimeout(() => likeAnimation.remove(), 1200);
+                } else {
+                    likeIcon.classList.remove('fas');
+                    likeIcon.classList.add('far');
+                    likeIcon.style.color = '';
+                    likeCount.textContent = formatNumber(currentLikes - 1);
+                    likeCount.style.color = '';
+                }
+            });
+            
+            const commentBtn = document.createElement('div');
+            commentBtn.className = 'action-btn';
+            const commentIcon = document.createElement('i');
+            commentIcon.className = 'action-icon far fa-comment';
+            const commentCount = document.createElement('div');
+            commentCount.className = 'action-count';
+            commentCount.textContent = formatNumber(getRandomCommentCount());
+            commentBtn.appendChild(commentIcon);
+            commentBtn.appendChild(commentCount);
+            
+            const commentsSection = document.createElement('div');
+            commentsSection.className = 'comments-section';
+            
+            const commentHeader = document.createElement('div');
+            commentHeader.className = 'comment-header';
+            const commentTitle = document.createElement('div');
+            commentTitle.className = 'comment-title';
+            commentTitle.textContent = 'Comments';
+            const closeComments = document.createElement('div');
+            closeComments.className = 'close-comments';
+            closeComments.innerHTML = '<i class="fas fa-times"></i>';
+            commentHeader.appendChild(commentTitle);
+            commentHeader.appendChild(closeComments);
+            commentsSection.appendChild(commentHeader);
+            
+            const commentInputContainer = document.createElement('div');
+            commentInputContainer.className = 'comment-input-container';
+            const commentInput = document.createElement('input');
+            commentInput.className = 'comment-input';
+            commentInput.placeholder = 'Add a comment...';
+            const commentSend = document.createElement('div');
+            commentSend.className = 'comment-send';
+            commentSend.innerHTML = '<i class="fas fa-paper-plane"></i>';
+            commentInputContainer.appendChild(commentInput);
+            commentInputContainer.appendChild(commentSend);
+            commentsSection.appendChild(commentInputContainer);
+            
+            const commentsContainer = document.createElement('div');
+            commentsContainer.className = 'comments-container';
+            commentsSection.appendChild(commentsContainer);
+            
+            // Initialize comments
+            const comments = generateComments();
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+                const commentAvatar = document.createElement('img');
+                commentAvatar.className = 'comment-avatar';
+                commentAvatar.src = comment.avatar;
+                commentAvatar.alt = comment.username;
+                const commentContent = document.createElement('div');
+                commentContent.className = 'comment-content';
+                const commentUsername = document.createElement('div');
+                commentUsername.className = 'comment-username';
+                commentUsername.textContent = comment.username;
+                const commentText = document.createElement('div');
+                commentText.className = 'comment-text';
+                commentText.textContent = comment.text;
+                const commentTime = document.createElement('div');
+                commentTime.className = 'comment-time';
+                commentTime.textContent = comment.time;
+                if (comment.likes > 0) {
+                    const commentLike = document.createElement('span');
+                    commentLike.className = 'comment-like';
+                    commentLike.innerHTML = `<i class="fas fa-heart"></i> ${comment.likes}`;
+                    commentTime.appendChild(commentLike);
+                }
+                commentContent.appendChild(commentUsername);
+                commentContent.appendChild(commentText);
+                commentContent.appendChild(commentTime);
+                commentElement.appendChild(commentAvatar);
+                commentElement.appendChild(commentContent);
+                commentsContainer.appendChild(commentElement);
+            });
+            
+            commentIcon.addEventListener('click', () => {
+                commentsSection.classList.add('show');
+                commentsSection.scrollTop = 0; // Input tepada ko'rinishi uchun
+            });
+            
+            closeComments.addEventListener('click', () => {
+                commentsSection.classList.remove('show');
+            });
+            
+            // Add new comment
+            commentSend.addEventListener('click', () => {
+                const commentText = commentInput.value.trim();
+                if (commentText) {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'comment';
+                    const commentAvatar = document.createElement('img');
+                    commentAvatar.className = 'comment-avatar';
+                    commentAvatar.src = 'https://i.pravatar.cc/150?img=1';
+                    commentAvatar.alt = 'user';
+                    const commentContent = document.createElement('div');
+                    commentContent.className = 'comment-content';
+                    const commentUsername = document.createElement('div');
+                    commentUsername.className = 'comment-username';
+                    commentUsername.textContent = 'user';
+                    const commentTextElement = document.createElement('div');
+                    commentTextElement.className = 'comment-text';
+                    commentTextElement.textContent = commentText;
+                    const commentTime = document.createElement('div');
+                    commentTime.className = 'comment-time';
+                    commentTime.textContent = 'Just now';
+                    commentContent.appendChild(commentUsername);
+                    commentContent.appendChild(commentTextElement);
+                    commentContent.appendChild(commentTime);
+                    commentElement.appendChild(commentAvatar);
+                    commentElement.appendChild(commentContent);
+                    commentsContainer.insertBefore(commentElement, commentsContainer.firstChild);
+                    commentInput.value = '';
+                    commentCount.textContent = formatNumber(parseInt(commentCount.textContent.replace(/,/g, '')) + 1);
+                    commentsSection.scrollTop = 0; // Yangi komment tepada ko'rinadi
+                }
+            });
+            
+            const shareBtn = document.createElement('div');
+            shareBtn.className = 'action-btn';
+            const shareIcon = document.createElement('i');
+            shareIcon.className = 'action-icon fas fa-share';
+            shareBtn.appendChild(shareIcon);
+            
+            const profilePic = document.createElement('img');
+            profilePic.className = 'profile-pic';
+            profilePic.src = `./animey.png`;
+            profilePic.alt = 'Profile';
+            
+            const followBtn = document.createElement('button');
+            
+            followBtn.addEventListener('click', () => {
+                followBtn.textContent = followBtn.textContent === 'Follow' ? 'Following' : 'Follow';
+                followBtn.classList.toggle('following');
+            });
+            
+            rightSidebar.appendChild(likeBtn);
+            rightSidebar.appendChild(commentBtn);
+            rightSidebar.appendChild(shareBtn);
+            rightSidebar.appendChild(profilePic);
+            rightSidebar.appendChild(followBtn);
+            
+            reel.appendChild(video);
+            reel.appendChild(volumeControl);
+            reel.appendChild(reelInfo);
+            reel.appendChild(rightSidebar);
+            reel.appendChild(commentsSection);
+            
+            return reel;
+        }
+
+        // Virtual scrolling
+        const reelsContainer = document.getElementById('reelsContainer');
+        let currentIndex = 0;
+        const batchSize = 1030;
+        
+        function loadReels(startIndex, count) {
+            if (!navigator.onLine) {
+                document.querySelectorAll('.offline-message').forEach(msg => msg.style.display = 'block');
+                return;
+            }
+            for (let i = startIndex; i < startIndex + count && i < shuffledVideos.length; i++) {
+                const reel = createReel(shuffledVideos[i], i);
+                reelsContainer.appendChild(reel);
+            }
+        }
+
+        // Initial load
+        loadReels(0, batchSize);
+
+        // Intersection Observer for lazy loading
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                const progressBar = entry.target.querySelector('.progress-bar');
+                const loadingContainer = entry.target.querySelector('.loading-container');
+                const offlineMessage = entry.target.querySelector('.offline-message');
+                
+                if (entry.isIntersecting) {
+                    if (navigator.onLine) {
+                        loadingContainer.style.display = 'none';
+                        offlineMessage.style.display = 'none';
+                        video.preload = 'auto';
+                        video.muted = isMuted; // Global ovoz holatini qo'llash
+                        video.play().catch(() => {
+                            console.log("Autoplay prevented");
+                            isMuted = true;
+                            video.muted = true;
+                            const volumeIcon = entry.target.querySelector('.volume-icon');
+                            volumeIcon.className = `volume-icon fas fa-volume-mute`;
+                        });
+                        progressBar.style.width = '0%';
+                        progressBar.style.transition = 'width 0.1s linear';
+                        video.addEventListener('timeupdate', function handler() {
+                            if (video.currentTime > video.duration - 0.5) {
+                                progressBar.style.transition = 'none';
+                                progressBar.style.width = '0%';
+                                setTimeout(() => {
+                                    progressBar.style.transition = 'width 0.1s linear';
+                                }, 10);
+                            }
+                        }, { once: true });
+                    } else {
+                        offlineMessage.style.display = 'block';
+                        loadingContainer.style.display = 'none';
+                    }
+                } else {
+                    video.pause();
+                    video.preload = 'none';
+                    loadingContainer.style.display = 'none';
+                    offlineMessage.style.display = 'none';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe reels
+        function observeReels() {
+            document.querySelectorAll('.reel').forEach(reel => observer.observe(reel));
+        }
+        observeReels();
+
+        // Debounce scroll event
+        let isScrolling = false;
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        reelsContainer.addEventListener('scroll', debounce(() => {
+            if (isScrolling) return;
+            isScrolling = true;
+            
+            const reels = document.querySelectorAll('.reel');
+            let closestReel = null;
+            let closestDistance = Infinity;
+            
+            reels.forEach(reel => {
+                const rect = reel.getBoundingClientRect();
+                const distance = Math.abs(rect.top);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestReel = reel;
+                }
+            });
+            
+            if (closestReel) {
+                closestReel.scrollIntoView({ behavior: 'smooth' });
+                const reelIndex = Array.from(reelsContainer.children).indexOf(closestReel);
+                if (reelIndex >= currentIndex + batchSize - 3 && currentIndex + batchSize < shuffledVideos.length) {
+                    loadReels(currentIndex + batchSize, batchSize);
+                    currentIndex += batchSize;
+                    
+                    // Remove old reels to free memory
+                    while (reelsContainer.children.length > batchSize * 2) {
+                        reelsContainer.removeChild(reelsContainer.firstChild);
+                        currentIndex--;
+                        observeReels();
+                    }
+                }
+            }
+            
+            isScrolling = false;
+        }, 150));
+
+        // Handle visibility changes
+        document.addEventListener('visibilitychange', () => {
+            const videos = document.querySelectorAll('video');
+            if (document.hidden) {
+                videos.forEach(video => video.pause());
+            } else {
+                updateOnlineStatus();
+            }
+        });
+    </script>
+    <script src="https://unpkg.com/scroll-snap-polyfill@0.2.1/dist/scroll-snap-polyfill.min.js"></script>
+</body>
+</html>
